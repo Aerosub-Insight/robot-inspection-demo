@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500">
+  <rect width="1200" height="500" fill="#0b2a3d"/>
+  <text x="600" y="40" text-anchor="middle" fill="#5fb3d9" font-family="sans-serif" font-size="20" letter-spacing="2">
+    NUCLEAR CONTAINMENT — PLACEHOLDER DIAGRAM
+  </text>
+
+  <!-- containment dome -->
+  <path d="M 320 420 L 320 260 Q 320 100 600 90 Q 880 100 880 260 L 880 420 Z"
+        fill="#123a52" stroke="#3d7ea6" stroke-width="3"/>
+
+  <!-- base slab -->
+  <rect x="260" y="420" width="680" height="30" fill="#123a52" stroke="#3d7ea6" stroke-width="3"/>
+
+  <!-- internal component (heel) -->
+  <ellipse cx="600" cy="380" rx="90" ry="24" fill="none" stroke="#5fb3d9" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <text x="600" y="480" text-anchor="middle" fill="#3d7ea6" font-family="sans-serif" font-size="13">
+    Replace this file with a real containment/vessel illustration — hotspot coordinates are percentage-based and will still align.
+  </text>
+</svg>
