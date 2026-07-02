@@ -1,51 +1,35 @@
-import { useState } from 'react'
-import type { SimpleTab } from '../types/content'
+import type { SimpleTab, VideoVariant } from '../types/content'
 import './SimpleVideoView.css'
 
 interface SimpleVideoViewProps {
   tab: SimpleTab
-  onPlay: (videoUrl: string, label: string) => void
+  onPlay: (variant: VideoVariant) => void
 }
 
 export function SimpleVideoView({ tab, onPlay }: SimpleVideoViewProps) {
-  const [selectedVariantId, setSelectedVariantId] = useState(tab.variants[0]?.id)
-  const selectedVariant = tab.variants.find((variant) => variant.id === selectedVariantId) ?? tab.variants[0]
-
   return (
-    <div className="simple-video-view">
-      <div className="simple-video-view__card">
-        <h2 className="simple-video-view__heading">{tab.label}</h2>
-
-        {tab.variants.length > 1 && (
-          <div className="simple-video-view__variants">
-            {tab.variants.map((variant) => (
-              <button
-                key={variant.id}
-                type="button"
-                className={`simple-video-view__variant${
-                  variant.id === selectedVariant?.id ? ' simple-video-view__variant--active' : ''
-                }`}
-                onClick={() => setSelectedVariantId(variant.id)}
-              >
-                {variant.label}
-              </button>
-            ))}
+    <div className="variant-grid">
+      {tab.variants.map((variant) => (
+        <div key={variant.id} className="variant-card">
+          <div className="variant-card__thumb">
+            <span className="variant-card__tag">{variant.tag ?? variant.label}</span>
+            <button
+              type="button"
+              className="variant-card__play-overlay"
+              onClick={() => onPlay(variant)}
+              aria-label={`Play ${variant.label}`}
+            >
+              <span className="variant-card__play-button">
+                <span className="variant-card__play-icon" aria-hidden="true" />
+              </span>
+            </button>
           </div>
-        )}
-
-        {selectedVariant && (
-          <button
-            type="button"
-            className="simple-video-view__play"
-            onClick={() => onPlay(selectedVariant.videoUrl, `${tab.label} — ${selectedVariant.label}`)}
-          >
-            <span className="simple-video-view__play-icon" aria-hidden="true">
-              ▶
-            </span>
-            Play footage
-          </button>
-        )}
-      </div>
+          <div className="variant-card__body">
+            <div className="variant-card__label">{variant.label}</div>
+            {variant.description && <p className="variant-card__description">{variant.description}</p>}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

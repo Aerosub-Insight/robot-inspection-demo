@@ -1,15 +1,20 @@
 import type { ContentManifest } from "../types/content";
 import hullSurface from "../assets/diagrams/hull.png";
-import pipelineSurface from "../assets/diagrams/pipeline.svg";
-import tankSurface from "../assets/diagrams/tank.svg";
-import nuclearSurface from "../assets/diagrams/nuclear.svg";
+import tanksSurface from "../assets/diagrams/tanks.png";
+import pipeSurface from "../assets/diagrams/pipe.png";
 import { youtubeEmbedUrl } from "./youtube";
+
+// The name of the prospective client this demo is being shown to.
+// Shown in the hero and closer copy ("your asset" / "your's assets").
+export const CLIENT_NAME: string = "your";
 
 // TODO: replace each share link below with the real YouTube (unlisted) link for that clip.
 // Paste the normal share URL (youtu.be/VIDEO_ID or youtube.com/watch?v=VIDEO_ID) —
 // youtubeEmbedUrl() converts it automatically. Google Drive links don't work reliably
 // for direct video playback (Drive serves an HTML interstitial for larger files).
-const PENDING = youtubeEmbedUrl("https://youtu.be/PLACEHOLDER");
+// Currently unused while pending-video tabs/hotspots below are commented out —
+// uncomment along with them when picking those back up.
+// const PENDING = youtubeEmbedUrl("https://youtu.be/PLACEHOLDER");
 
 export const manifest: ContentManifest = {
   tabs: [
@@ -17,30 +22,29 @@ export const manifest: ContentManifest = {
       id: "hull",
       label: "Hull",
       type: "hotspot",
-      title: "Hull coverage — FPSO side profile",
-      description:
-        "Each marked zone links to crawler-robot inspection footage. Select a hull surface to review coverage for that area.",
+      title: "Hull — FPSO side profile",
+      note: "Side-shell plating and a riser — two zones a magnetic crawler can cover on this kind of hull.",
       diagramImage: hullSurface,
       diagramAlt: "Fast4Ward FPSO hull, side profile",
       hotspots: [
         {
           id: "hull-plating",
-          label: "Hull Plating",
-          x: 45,
-          y: 58,
-          // TODO: confirm crawler model/spec used in this clip and refine copy.
+          label: "Side-shell plating",
+          x: 44.6,
+          y: 57.3,
+          surface: "Coated steel · vertical",
           description:
-            "Magnetic-wheeled crawler unit performs automated UT thickness mapping across the hull's external plating, holding contact through wave action without diver intervention.",
+            "The magnetic crawler moves across vertical coated steel plating, the kind of run typical of a ship-side hull section.",
           videoUrl: youtubeEmbedUrl("https://youtu.be/xrn8zV57HSA"),
         },
         {
           id: "riser",
-          label: "Riser",
-          x: 88,
+          label: "Riser & stern touchdown",
+          x: 89,
           y: 55,
-          // TODO: confirm crawler model/spec used in this clip and refine copy.
+          surface: "Curved steel · splash zone",
           description:
-            "Riser-mounted crawler navigates the vertical steel catenary, capturing corrosion and wall-loss data along the full riser run in a single deployment.",
+            "The crawler negotiates curved steel in a splash-zone-style setting, similar to a riser or stern touchdown area.",
           videoUrl: youtubeEmbedUrl("https://youtu.be/4tp7ytmrahw"),
         },
       ],
@@ -49,10 +53,9 @@ export const manifest: ContentManifest = {
       id: "pipeline",
       label: "Pipeline",
       type: "hotspot",
-      title: "Pipeline coverage — riser & bend sections",
-      description:
-        "Each marked zone links to crawler-robot inspection footage. Select a pipe section to review coverage for that area.",
-      diagramImage: pipelineSurface,
+      title: "Pipeline — process spool run",
+      note: "Straight runs, bends, and the actuator system that drives the crawler through them.",
+      diagramImage: pipeSurface,
       diagramAlt: "Pipeline and riser sections",
       hotspots: [
         {
@@ -60,42 +63,35 @@ export const manifest: ContentManifest = {
           label: "Straight Run — 2km Dual Y380",
           x: 24,
           y: 46,
-          videoUrl: PENDING,
+          surface: "Insulated steel · horizontal",
+          videoUrl: youtubeEmbedUrl("https://youtu.be/V6y81WJEhrc"),
         },
         {
           id: "bend",
           label: "Pipe Bend — Y200 Enter Bend",
           x: 54,
           y: 35,
-          videoUrl: PENDING,
+          surface: "Curved steel",
+          videoUrl: youtubeEmbedUrl(
+            "https://youtube.com/shorts/iOdyqIvfv6o?feature=share",
+          ),
         },
-        {
-          id: "vertical",
-          label: "Vertical Section — Y200 MultiBend Vertical",
-          x: 58,
-          y: 20,
-          videoUrl: PENDING,
-        },
-        {
-          id: "multi-bend",
-          label: "Multi-Bend Run — Y200 Multi-bend Pipe",
-          x: 82,
-          y: 68,
-          videoUrl: PENDING,
-        },
-        {
-          id: "site-deployment",
-          label: "Site Deployment — Y200",
-          x: 40,
-          y: 46,
-          videoUrl: PENDING,
-        },
+        // TODO: no video yet — re-enable once footage is ready.
+        // {
+        //   id: "vertical",
+        //   label: "Vertical Section — Y200 MultiBend Vertical",
+        //   x: 58,
+        //   y: 20,
+        //   surface: "Insulated steel · vertical",
+        //   videoUrl: PENDING,
+        // },
         {
           id: "actuator-system",
           label: "Rotate & Linear Actuator System — M345 / Y200",
           x: 68,
           y: 46,
-          videoUrl: PENDING,
+          surface: "Equipment demo",
+          videoUrl: youtubeEmbedUrl("https://youtu.be/AeMfnS0YKuc"),
         },
       ],
     },
@@ -103,82 +99,136 @@ export const manifest: ContentManifest = {
       id: "tanks",
       label: "Tanks",
       type: "hotspot",
-      title: "Tank coverage — interior surfaces",
-      description:
-        "Each marked zone links to crawler-robot inspection footage. Select a tank surface to review coverage for that area.",
-      diagramImage: tankSurface,
-      diagramAlt: "Storage tank interior",
+      title: "Tanks — storage shell & floor",
+      note: "Cleaning, multi-NDT setup, and deployment on tank shell and floor surfaces.",
+      diagramImage: tanksSurface,
+      diagramAlt: "Row of rectangular steel storage tanks",
       hotspots: [
-        {
-          id: "multi-ndt-setup",
-          label: "Cleaning & Multi-NDT Setup",
-          x: 30,
-          y: 55,
-          videoUrl: PENDING,
-        },
         {
           id: "large-tank-cleaning",
           label: "Large Tank Cleaning & Multi-NDT",
-          x: 60,
+          x: 32,
           y: 55,
-          videoUrl: PENDING,
+          surface: "Shell course",
+          videoUrl: youtubeEmbedUrl("https://youtu.be/GDitcyMFuzo"),
         },
         {
           id: "m345-y200",
           label: "M345 & Y200 Deployment",
-          x: 45,
-          y: 30,
-          videoUrl: PENDING,
+          x: 57,
+          y: 48,
+          surface: "Ladder & pipe run",
+          videoUrl: youtubeEmbedUrl("https://youtu.be/RTLO5lIL0Ls"),
         },
         {
           id: "ut-acquisition",
           label: "M345 Internal UT Acquisition Board",
-          x: 75,
-          y: 30,
-          videoUrl: PENDING,
+          x: 78,
+          y: 75,
+          surface: "Base manway & valves",
+          videoUrl: youtubeEmbedUrl(
+            "https://youtube.com/shorts/_6xCJohId2A?feature=share",
+          ),
         },
       ],
     },
-    {
-      id: "nuclear",
-      label: "Nuclear",
-      type: "hotspot",
-      title: "Nuclear coverage — containment vessel",
-      description:
-        "Each marked zone links to crawler-robot inspection footage. Select a vessel surface to review coverage for that area.",
-      diagramImage: nuclearSurface,
-      diagramAlt: "Nuclear containment vessel",
-      hotspots: [
-        {
-          id: "heel-characterisation",
-          label: "Heel Characterisation System",
-          x: 50,
-          y: 76,
-          videoUrl: PENDING,
-        },
-        {
-          id: "custom-build",
-          label: "Custom-Built Nuclear Environment Crawler",
-          x: 50,
-          y: 40,
-          videoUrl: PENDING,
-        },
-      ],
-    },
-    {
-      id: "m145",
-      label: "M145 Platform",
-      type: "simple",
-      variants: [
-        { id: "ahd-12ft", label: "AHD — 12ft", videoUrl: PENDING },
-        { id: "ahd-4ft", label: "AHD — 4ft", videoUrl: PENDING },
-        { id: "ahd-1ft", label: "AHD — 1ft", videoUrl: PENDING },
-        { id: "ahd-1inch", label: "AHD — 1inch", videoUrl: PENDING },
-        { id: "sd-12ft", label: "SD — 12ft", videoUrl: PENDING },
-        { id: "sd-4ft", label: "SD — 4ft", videoUrl: PENDING },
-        { id: "sd-1ft", label: "SD — 1ft", videoUrl: PENDING },
-        { id: "sd-1inch", label: "SD — 1inch", videoUrl: PENDING },
-      ],
-    },
+    // TODO: no real content yet — re-enable once a diagram/photo and video links are ready.
+    // {
+    //   id: "nuclear",
+    //   label: "Nuclear",
+    //   type: "hotspot",
+    //   title: "Nuclear — containment liner",
+    //   note: "Placeholder diagram — zones are wired and ready for a client photo of the actual structure.",
+    //   diagramImage: null,
+    //   diagramAlt: "Nuclear containment vessel",
+    //   hotspots: [
+    //     {
+    //       id: "heel-characterisation",
+    //       label: "Heel Characterisation System",
+    //       x: 50,
+    //       y: 76,
+    //       surface: "Floor plate",
+    //       videoUrl: PENDING,
+    //     },
+    //     {
+    //       id: "custom-build",
+    //       label: "Custom-Built Nuclear Environment Crawler",
+    //       x: 50,
+    //       y: 40,
+    //       surface: "Stainless liner",
+    //       videoUrl: PENDING,
+    //     },
+    //   ],
+    // },
+    // TODO: no video links yet — re-enable once footage is ready.
+    // {
+    //   id: "m145",
+    //   label: "M145 Platform",
+    //   type: "simple",
+    //   note: "Same crawler, different camera heads and standoff distances — pick a clip to compare capture quality.",
+    //   variants: [
+    //     {
+    //       id: "ahd-12ft",
+    //       label: "AHD head — 12ft standoff",
+    //       tag: "AHD · 12ft",
+    //       description:
+    //         "High-definition head at long standoff — widest coverage per pass.",
+    //       videoUrl: PENDING,
+    //     },
+    //     {
+    //       id: "ahd-4ft",
+    //       label: "AHD head — 4ft standoff",
+    //       tag: "AHD · 4ft",
+    //       description: "High-definition head at medium standoff.",
+    //       videoUrl: PENDING,
+    //     },
+    //     {
+    //       id: "ahd-1ft",
+    //       label: "AHD head — 1ft standoff",
+    //       tag: "AHD · 1ft",
+    //       description:
+    //         "High-definition head at close standoff — fine weld and coating detail.",
+    //       videoUrl: PENDING,
+    //     },
+    //     {
+    //       id: "ahd-1inch",
+    //       label: "AHD head — 1inch standoff",
+    //       tag: "AHD · 1in",
+    //       description:
+    //         "High-definition head at minimum standoff for maximum detail.",
+    //       videoUrl: PENDING,
+    //     },
+    //     {
+    //       id: "sd-12ft",
+    //       label: "SD head — 12ft standoff",
+    //       tag: "SD · 12ft",
+    //       description:
+    //         "Standard-definition head at long standoff for a direct comparison.",
+    //       videoUrl: PENDING,
+    //     },
+    //     {
+    //       id: "sd-4ft",
+    //       label: "SD head — 4ft standoff",
+    //       tag: "SD · 4ft",
+    //       description: "Standard-definition head at medium standoff.",
+    //       videoUrl: PENDING,
+    //     },
+    //     {
+    //       id: "sd-1ft",
+    //       label: "SD head — 1ft standoff",
+    //       tag: "SD · 1ft",
+    //       description:
+    //         "Standard-definition head at close standoff, showing the trade-off in detail.",
+    //       videoUrl: PENDING,
+    //     },
+    //     {
+    //       id: "sd-1inch",
+    //       label: "SD head — 1inch standoff",
+    //       tag: "SD · 1in",
+    //       description: "Standard-definition head at minimum standoff.",
+    //       videoUrl: PENDING,
+    //     },
+    //   ],
+    // },
   ],
 };

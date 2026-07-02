@@ -2,54 +2,60 @@
   position: fixed;
   inset: 0;
   background: var(--backdrop);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 24px;
   z-index: 100;
+  animation: cardin 0.18s ease;
 }
 
 .video-modal__panel {
-  background: var(--bg-raised);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  width: 100%;
-  max-width: 960px;
-  box-shadow: 0 20px 40px var(--shadow);
+  width: min(920px, 100%);
+  background: var(--ink-raised);
+  border: 1px solid var(--ink-border-strong);
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
 }
 
 .video-modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.85rem 1.25rem;
-  border-bottom: 1px solid var(--border);
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--ink-border);
 }
 
 .video-modal__title {
-  color: var(--text);
-  font-size: 0.95rem;
+  color: var(--ink-text);
+  font-size: 14px;
   font-weight: 600;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .video-modal__close {
+  flex-shrink: 0;
   appearance: none;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 1.4rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: #182233;
+  border: 1px solid var(--ink-border-strong);
+  color: var(--ink-text-muted);
+  font-size: 16px;
   line-height: 1;
   cursor: pointer;
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
-  transition: background 0.12s ease, color 0.12s ease;
+  transition: color 0.12s ease, border-color 0.12s ease;
 }
 
 .video-modal__close:hover {
-  color: var(--text);
-  background: var(--bg-sunken);
+  color: #fff;
+  border-color: var(--accent);
 }
 
 .video-modal__body {
@@ -67,13 +73,13 @@
 }
 
 .video-modal__error {
-  color: var(--text);
+  color: var(--ink-text);
   text-align: center;
   padding: 2rem;
 }
 
 .video-modal__error-detail {
-  color: var(--text-subtle);
+  color: var(--ink-text-subtle);
   font-size: 0.82rem;
   margin-top: 0.4rem;
 }

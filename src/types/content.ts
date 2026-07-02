@@ -3,6 +3,7 @@ export interface Hotspot {
   label: string
   x: number // percentage 0-100
   y: number // percentage 0-100
+  surface?: string
   description?: string
   videoUrl: string
 }
@@ -14,7 +15,8 @@ export interface HotspotTab {
   eyebrow?: string
   title?: string
   description?: string
-  diagramImage: string
+  note?: string
+  diagramImage: string | null
   diagramAlt: string
   hotspots: Hotspot[]
 }
@@ -22,6 +24,8 @@ export interface HotspotTab {
 export interface VideoVariant {
   id: string
   label: string
+  tag?: string
+  description?: string
   videoUrl: string
 }
 
@@ -29,6 +33,7 @@ export interface SimpleTab {
   id: string
   label: string
   type: 'simple'
+  note?: string
   variants: VideoVariant[]
 }
 

@@ -11,7 +11,12 @@ export function isYoutubeUrl(url: string): boolean {
 }
 
 function extractYoutubeId(url: string): string {
-  const patterns = [/youtu\.be\/([^?&]+)/, /[?&]v=([^?&]+)/, /youtube\.com\/embed\/([^?&]+)/]
+  const patterns = [
+    /youtu\.be\/([^?&]+)/,
+    /[?&]v=([^?&]+)/,
+    /youtube\.com\/embed\/([^?&]+)/,
+    /youtube\.com\/shorts\/([^?&]+)/,
+  ]
   for (const pattern of patterns) {
     const match = url.match(pattern)
     if (match) return match[1]

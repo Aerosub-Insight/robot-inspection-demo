@@ -1,71 +1,257 @@
-.hotspot-diagram {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem 2rem 2rem;
+.hotspot-explorer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(290px, 1fr);
+  gap: 26px;
+  align-items: start;
 }
 
-.hotspot-diagram__stage {
+@media (max-width: 900px) {
+  .hotspot-explorer {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hotspot-explorer__stage {
   position: relative;
-  width: 100%;
-  max-width: 1100px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--ink-sunken);
+  box-shadow: 0 10px 34px var(--shadow);
 }
 
-.hotspot-diagram__image {
+.hotspot-explorer__image {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  box-shadow: 0 1px 3px var(--shadow);
 }
 
-.hotspot-diagram__dot {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 2px solid var(--bg-raised);
-  cursor: pointer;
-  box-shadow: 0 0 0 1px var(--border-strong), 0 2px 6px var(--shadow);
-  padding: 0;
+.hotspot-explorer__placeholder {
+  aspect-ratio: 2.35 / 1;
+  width: 100%;
+  background-image: repeating-linear-gradient(45deg, #101a28 0 14px, #0b1420 14px 28px);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+  text-align: center;
 }
 
-.hotspot-diagram__dot:hover,
-.hotspot-diagram__dot:focus-visible {
-  background: var(--accent-hover);
-  transform: translate(-50%, -50%) scale(1.15);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+.hotspot-explorer__placeholder-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #5c6a7c;
 }
 
-.hotspot-diagram__tooltip {
+.hotspot-explorer__placeholder-hint {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: #3f4b5a;
+  margin-top: 7px;
+}
+
+.hotspot-explorer__pin {
   position: absolute;
-  bottom: calc(100% + 10px);
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  z-index: 4;
+}
+
+.hotspot-explorer__pin--active {
+  z-index: 6;
+}
+
+.hotspot-explorer__pin-ring {
+  position: absolute;
   left: 50%;
-  transform: translateX(-50%);
-  background: var(--text);
-  color: var(--bg-raised);
-  padding: 0.35rem 0.65rem;
-  border-radius: 6px;
-  font-size: 0.78rem;
+  top: 50%;
+  width: 41px;
+  height: 41px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(37, 99, 235, 0.6);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: crawlpulse 2.6s ease-out infinite;
+}
+
+.hotspot-explorer__pin--active .hotspot-explorer__pin-ring {
+  animation: none;
+}
+
+.hotspot-explorer__pin-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.94);
+  border: 2.5px solid #fff;
+  box-shadow: 0 2px 10px rgba(13, 21, 32, 0.5), 0 0 0 1px rgba(13, 21, 32, 0.12);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 600;
+  transition: all 0.14s;
+}
+
+.hotspot-explorer__pin--active .hotspot-explorer__pin-dot {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+}
+
+.hotspot-explorer__pin-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 9px);
+  transform: translateX(-50%);
   white-space: nowrap;
-  box-shadow: 0 4px 14px var(--shadow);
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 9px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.14s;
   pointer-events: none;
 }
 
-.hotspot-diagram__tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: var(--text);
+.hotspot-explorer__pin--active .hotspot-explorer__pin-label {
+  opacity: 1;
+}
+
+.hotspot-explorer__zones-heading {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: 12px;
+}
+
+.hotspot-explorer__row {
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  margin-bottom: 9px;
+  overflow: hidden;
+  background: var(--bg-raised);
+  transition: border-color 0.15s;
+}
+
+.hotspot-explorer__row--highlighted {
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px var(--shadow);
+}
+
+.hotspot-explorer__row-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.hotspot-explorer__row-badge {
+  flex-shrink: 0;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef0f3;
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+
+.hotspot-explorer__row--highlighted .hotspot-explorer__row-badge {
+  background: var(--accent);
+  color: #fff;
+}
+
+.hotspot-explorer__row-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.hotspot-explorer__row-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.hotspot-explorer__row-surface {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-subtle);
+  margin-top: 3px;
+  letter-spacing: 0.02em;
+}
+
+.hotspot-explorer__row-chevron {
+  flex-shrink: 0;
+  width: 22px;
+  text-align: center;
+  color: var(--border-strong);
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.hotspot-explorer__row-body {
+  padding: 0 15px 15px 51px;
+  animation: cardin 0.2s ease;
+}
+
+.hotspot-explorer__row-description {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
+
+.hotspot-explorer__row-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.hotspot-explorer__row-play:hover {
+  background: var(--accent);
+}
+
+.hotspot-explorer__row-play-icon {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 9px solid currentColor;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
 }
