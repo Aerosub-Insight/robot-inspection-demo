@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import introVideo from "./assets/video.mp4";
 import { manifest } from "./content/manifest";
 import { youtubeEmbedUrl } from "./content/youtube";
 import type { Hotspot } from "./types/content";
 import "./IntroLanding.css";
+
+// Hosted on Cloudinary rather than bundled — Netlify's static asset CDN
+// truncates large (40MB+) video files served straight from the build output.
+const introVideo =
+  "https://res.cloudinary.com/si6hekwh/video/upload/v1783086046/Industrial_Alert_Video_In_a_cinematic_style_a_large_red_industrial_ship_O_BcVGXs_yxwp0n.mp4";
 
 const hullTab = manifest.tabs.find(
   (tab) => tab.id === "hull" && tab.type === "hotspot",

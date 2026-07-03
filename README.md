@@ -29,13 +29,15 @@ Everything — tabs, zone positions, video links, copy — lives in one file: [`
 
 **To reposition a hotspot on the intro landing (`/`) independently of the explorer:** set `introX` / `introY` (percentages, 0–100) on that hotspot's entry; otherwise it falls back to the explorer's `x` / `y`.
 
-**To swap the intro landing's video clip:** replace [`src/assets/video.mp4`](src/assets/video.mp4) and, if the freeze frame should land elsewhere, adjust `FREEZE_AT_SECONDS` in `IntroLanding.tsx`.
+**To swap the intro landing's video clip:** update the `introVideo` URL constant near the top of `IntroLanding.tsx` (currently hosted on Cloudinary — see [Video hosting](#video-hosting)), and, if the freeze frame should land elsewhere, adjust `FREEZE_AT_SECONDS`.
 
 ## Video hosting
 
-Google Drive share links **do not work** for direct playback — Drive serves an HTML "can't scan for viruses" interstitial instead of the video file for anything but small clips. YouTube (including unlisted/Shorts) is the current approach: free, no size limits, reliable streaming, embeds via iframe.
+Google Drive share links **do not work** for direct playback — Drive serves an HTML "can't scan for viruses" interstitial instead of the video file for anything but small clips. YouTube (including unlisted/Shorts) is the current approach for explorer hotspot clips: free, no size limits, reliable streaming, embeds via iframe.
 
 `VideoModal` auto-detects YouTube URLs and renders an iframe embed; any other URL falls back to a native `<video>` tag with error handling (blank/broken links show a visible error state instead of failing silently). This means the hosting provider can change later (e.g. to S3 or Cloudinary) by only editing manifest URLs.
+
+**The intro landing's autoplay clip is different** — it needs a raw, seekable `<video src>` (not a YouTube iframe) to support autoplay-then-freeze-on-frame. Bundling that file locally under `src/assets/` does **not** work in production: Netlify's static asset CDN was found to truncate/stall large (40MB+) video files served straight from the build output, so the video silently fails to play after deploy even though it works in `npm run dev`. It's hosted on Cloudinary instead — the `introVideo` URL constant near the top of `IntroLanding.tsx` points there. If you need to swap the clip, upload the new file to Cloudinary (or another host that serves direct, range-request-capable file URLs) and update that constant; don't re-add the file to `src/assets/`.
 
 ## Project status
 
