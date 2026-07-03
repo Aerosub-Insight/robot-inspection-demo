@@ -1,14 +1,15 @@
 # Aerosub Solutions — Robot Inspection Demo
 
-A standalone React app that showcases crawler robot inspection footage to a prospective Aerosub client. Instead of sharing a raw folder of videos, the client picks a surface/asset type from a tab bar and clicks marked zones on a photo to watch sample crawler footage for that kind of surface.
+A standalone React app that showcases crawler robot inspection footage to a prospective Aerosub client. Instead of sharing a raw folder of videos, the client lands on an autoplaying hull inspection clip, taps a marked zone to preview a sample, then can jump into a full explorer where they pick a surface/asset type from a tab bar and click marked zones on a photo to watch sample crawler footage for that kind of surface.
 
 The footage is sample/demo material of the crawlers in motion — it's presented as illustrative capability, not a live inspection of the client's own asset.
 
 ## How it works
 
-- **Tabs** (top bar) represent surface types — Hull, Pipeline, Tanks. (Nuclear and M145 Platform exist in the content manifest but are currently commented out — see [Project status](#project-status).)
-- Each hotspot tab shows a photo with numbered, clickable zones. Clicking a zone (or its matching row in the sidebar list) expands a detail card — description + a **Play inspection footage** button — inline in the sidebar, next to the photo.
-- Clicking Play opens a modal video player.
+The app has two routes (see [`src/main.tsx`](src/main.tsx)):
+
+- **`/` — Intro landing** ([`src/IntroLanding.tsx`](src/IntroLanding.tsx)): an autoplaying, muted hull inspection video freezes on a frame a few seconds in, then reveals clickable hotspots over the frozen video. Clicking one opens a popup with a description and an embedded YouTube preview, plus a CTA to jump to `/explorer`. Hotspot positions on this view can be tuned independently of the explorer via optional `introX`/`introY` fields on each hotspot (falls back to `x`/`y` if unset) — see [`src/types/content.ts`](src/types/content.ts).
+- **`/explorer` — Full explorer** ([`src/App.tsx`](src/App.tsx)): **Tabs** (top bar) represent surface types — Hull, Pipeline, Tanks. (Nuclear and M145 Platform exist in the content manifest but are currently commented out — see [Project status](#project-status).) Each hotspot tab shows a photo with numbered, clickable zones. Clicking a zone (or its matching row in the sidebar list) expands a detail card — description + a **Play inspection footage** button — inline in the sidebar, next to the photo. Clicking Play opens a modal video player.
 - Videos embed via **YouTube** (including Shorts links); the player also supports direct file URLs (`<video src>`) for any future S3/Cloudinary/local hosting — see [Video hosting](#video-hosting) below.
 - Fixed dark-chrome design (sticky header, dark hero/closer, light content area) — no light/dark theme toggle.
 
@@ -25,6 +26,10 @@ Everything — tabs, zone positions, video links, copy — lives in one file: [`
 **To swap a diagram image:** drop the file into [`src/assets/diagrams/`](src/assets/diagrams/) and update the corresponding `import` at the top of `manifest.ts`.
 
 **To bring back a commented-out tab:** uncomment the tab object (and the `PENDING` constant near the top of the file, if it's still commented too) in `manifest.ts`, then fill in real video links.
+
+**To reposition a hotspot on the intro landing (`/`) independently of the explorer:** set `introX` / `introY` (percentages, 0–100) on that hotspot's entry; otherwise it falls back to the explorer's `x` / `y`.
+
+**To swap the intro landing's video clip:** replace [`src/assets/video.mp4`](src/assets/video.mp4) and, if the freeze frame should land elsewhere, adjust `FREEZE_AT_SECONDS` in `IntroLanding.tsx`.
 
 ## Video hosting
 
