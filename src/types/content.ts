@@ -1,8 +1,10 @@
 export interface Hotspot {
   id: string
   label: string
-  x: number // percentage 0-100
-  y: number // percentage 0-100
+  x: number // percentage 0-100, position on the /explorer diagram
+  y: number // percentage 0-100, position on the /explorer diagram
+  introX?: number // percentage 0-100, position on the / intro video frame (falls back to x)
+  introY?: number // percentage 0-100, position on the / intro video frame (falls back to y)
   surface?: string
   description?: string
   videoUrl: string

@@ -32,6 +32,8 @@ export const manifest: ContentManifest = {
           label: "Side-shell plating",
           x: 44.6,
           y: 57.3,
+          introX: 44.6,
+          introY: 57.3,
           surface: "Coated steel · vertical",
           description:
             "The magnetic crawler moves across vertical coated steel plating, the kind of run typical of a ship-side hull section.",
@@ -42,6 +44,8 @@ export const manifest: ContentManifest = {
           label: "Riser & stern touchdown",
           x: 89,
           y: 55,
+          introX: 93,
+          introY: 55,
           surface: "Curved steel · splash zone",
           description:
             "The crawler negotiates curved steel in a splash-zone-style setting, similar to a riser or stern touchdown area.",

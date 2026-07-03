@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TabBar } from "./components/TabBar";
 import { HotspotDiagram } from "./components/HotspotDiagram";
 import { SimpleVideoView } from "./components/SimpleVideoView";
@@ -19,6 +19,14 @@ function App() {
     title: string;
     tabLabel: string;
   } | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const activeTab = manifest.tabs.find((tab) => tab.id === activeTabId);
 
@@ -46,7 +54,7 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
+      <header className={`app-header${scrolled ? " app-header--glass" : ""}`}>
         <div className="app-header__brand">
           <span className="app-header__mark">
             <span className="app-header__mark-diamond" />
