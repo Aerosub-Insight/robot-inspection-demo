@@ -5,6 +5,7 @@ export interface Hotspot {
   y: number // percentage 0-100, position on the /explorer diagram
   introX?: number // percentage 0-100, position on the / intro video frame (falls back to x)
   introY?: number // percentage 0-100, position on the / intro video frame (falls back to y)
+  ctaLabel?: string // short CTA button text for the / landing page (falls back to label)
   surface?: string
   description?: string
   videoUrl: string

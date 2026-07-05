@@ -16,8 +16,13 @@ const hullTab = manifest.tabs.find(
 const hullHotspots: Hotspot[] =
   hullTab && hullTab.type === "hotspot" ? hullTab.hotspots : [];
 
-// Freeze the intro clip here — the riser is visible at this point in the footage.
+// Freeze the intro clip here — the riser is visible at this point in the
+// footage, and every hotspot's x/y is calibrated against this exact frame.
 const FREEZE_AT_SECONDS = 8;
+
+// How long the zoom-toward-hotspot transition runs before the popup opens —
+// keep in sync with the transition-duration on .intro__stage-inner in CSS.
+const ZOOM_TRAVEL_MS = 600;
 
 // Above this width the video can fill the viewport with object-fit: cover
 // (no letterbox bars), so the overlay text is hidden and hotspots are placed
@@ -34,7 +39,10 @@ interface VideoBox {
 export default function IntroLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const travelTimeout = useRef<number | null>(null);
   const [videoEnded, setVideoEnded] = useState(false);
+  const [ambient, setAmbient] = useState(false);
+  const [zoomedHotspot, setZoomedHotspot] = useState<Hotspot | null>(null);
   const [activeHotspot, setActiveHotspot] = useState<Hotspot | null>(null);
   const [videoBox, setVideoBox] = useState<VideoBox | null>(null);
   const [isLargeScreen, setIsLargeScreen] = useState(
@@ -59,11 +67,18 @@ export default function IntroLanding() {
         video.pause();
         video.currentTime = FREEZE_AT_SECONDS;
         setVideoEnded(true);
+        setAmbient(true);
       }
     };
 
     video.addEventListener("timeupdate", handleTimeUpdate);
     return () => video.removeEventListener("timeupdate", handleTimeUpdate);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (travelTimeout.current) window.clearTimeout(travelTimeout.current);
+    };
   }, []);
 
   // On large screens the video uses object-fit: cover (fills the container,
@@ -118,10 +133,48 @@ export default function IntroLanding() {
     };
   }, [isLargeScreen]);
 
-  const closePopup = () => setActiveHotspot(null);
+  const travelTo = (hotspot: Hotspot) => {
+    if (travelTimeout.current) window.clearTimeout(travelTimeout.current);
+    setAmbient(false);
+    setZoomedHotspot(hotspot);
+    travelTimeout.current = window.setTimeout(() => {
+      setActiveHotspot(hotspot);
+    }, ZOOM_TRAVEL_MS);
+  };
+
+  const closePopup = () => {
+    setActiveHotspot(null);
+    setZoomedHotspot(null);
+  };
+
+  // The idle "hover" animation and the zoom-to-hotspot transform share the
+  // same transform property, so the breathing loop only restarts once the
+  // zoom-out transition has actually finished (avoids a jump-cut).
+  const handleStageTransitionEnd = (
+    event: React.TransitionEvent<HTMLDivElement>,
+  ) => {
+    if (event.target !== event.currentTarget) return;
+    if (event.propertyName !== "transform") return;
+    if (!zoomedHotspot) setAmbient(true);
+  };
+
+  const zoomOrigin = zoomedHotspot
+    ? `${zoomedHotspot.introX ?? zoomedHotspot.x}% ${zoomedHotspot.introY ?? zoomedHotspot.y}%`
+    : "50% 50%";
+
+  const ctas = hullHotspots.map((hotspot) => (
+    <button
+      key={hotspot.id}
+      type="button"
+      className={`intro__cta${zoomedHotspot?.id === hotspot.id ? " intro__cta--active" : ""}`}
+      onClick={() => travelTo(hotspot)}
+    >
+      {hotspot.ctaLabel ?? hotspot.label}
+    </button>
+  ));
 
   return (
-    <div className="intro" ref={containerRef}>
+    <div className="intro">
       {!isLargeScreen && (
         <div className="intro__eyebrow">
           <span className="intro__eyebrow-mark">&#9670;</span>
@@ -129,16 +182,53 @@ export default function IntroLanding() {
         </div>
       )}
 
-      <video
-        ref={videoRef}
-        className={`intro__video${isLargeScreen ? " intro__video--cover" : ""}`}
-        src={introVideo}
-        autoPlay
-        muted
-        playsInline
-      >
-        Your browser does not support the video tag.
-      </video>
+      <div className="intro__stage" ref={containerRef}>
+        <div
+          className={`intro__zoom${zoomedHotspot ? " is-zoomed" : ""}`}
+          style={{ transformOrigin: zoomOrigin }}
+          onTransitionEnd={handleStageTransitionEnd}
+        >
+          <div className={`intro__pan${ambient ? " is-idle" : ""}`}>
+            <video
+              ref={videoRef}
+              className={`intro__video${isLargeScreen ? " intro__video--cover" : ""}`}
+              src={introVideo}
+              autoPlay
+              muted
+              playsInline
+            >
+              Your browser does not support the video tag.
+            </video>
+
+            {videoEnded &&
+              videoBox &&
+              hullHotspots.map((hotspot) => (
+                <button
+                  key={hotspot.id}
+                  type="button"
+                  className="intro__hotspot"
+                  style={{
+                    left: `${videoBox.left + (videoBox.width * (hotspot.introX ?? hotspot.x)) / 100}px`,
+                    top: `${videoBox.top + (videoBox.height * (hotspot.introY ?? hotspot.y)) / 100}px`,
+                  }}
+                  onClick={() => travelTo(hotspot)}
+                  aria-label={`View ${hotspot.label} details`}
+                >
+                  <span className="intro__hotspot-ring" />
+                  <span className="intro__hotspot-dot" />
+                </button>
+              ))}
+          </div>
+        </div>
+
+        {isLargeScreen && videoEnded && (
+          <div className="intro__ctas intro__ctas--overlay">{ctas}</div>
+        )}
+      </div>
+
+      {!isLargeScreen && videoEnded && (
+        <div className="intro__ctas">{ctas}</div>
+      )}
 
       {!isLargeScreen && (
         <div className="intro__caption">
@@ -147,25 +237,6 @@ export default function IntroLanding() {
             : "FPSO hull inspection · sample footage"}
         </div>
       )}
-
-      {videoEnded &&
-        videoBox &&
-        hullHotspots.map((hotspot) => (
-          <button
-            key={hotspot.id}
-            type="button"
-            className="intro__hotspot"
-            style={{
-              left: `${videoBox.left + (videoBox.width * (hotspot.introX ?? hotspot.x)) / 100}px`,
-              top: `${videoBox.top + (videoBox.height * (hotspot.introY ?? hotspot.y)) / 100}px`,
-            }}
-            onClick={() => setActiveHotspot(hotspot)}
-            aria-label={`View ${hotspot.label} details`}
-          >
-            <span className="intro__hotspot-ring" />
-            <span className="intro__hotspot-dot" />
-          </button>
-        ))}
 
       {activeHotspot && (
         <div

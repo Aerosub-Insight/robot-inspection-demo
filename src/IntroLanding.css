@@ -3,20 +3,9 @@
   width: 100%;
   height: 100svh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   background: var(--ink);
-}
-
-.intro__video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: var(--ink);
-}
-
-.intro__video--cover {
-  object-fit: cover;
 }
 
 .intro__eyebrow {
@@ -38,18 +27,178 @@
   color: var(--accent);
 }
 
-.intro__caption {
+.intro__stage {
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+/* Two independent transform layers so the zoom transition and the idle pan
+   animation never fight over the same element's `transform` property —
+   switching a single element between an animation and a transition on the
+   same property is unreliable across browsers and was causing both the
+   janky zoom and the pan glitches. */
+.intro__zoom {
   position: absolute;
-  bottom: 20px;
-  left: 24px;
-  right: 24px;
-  z-index: 3;
+  inset: 0;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.intro__zoom.is-zoomed {
+  transform: scale(1.65);
+}
+
+.intro__pan {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.intro__pan.is-idle {
+  animation: hover-pan 6s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes hover-pan {
+  from {
+    transform: translate3d(-1.4%, 0, 0);
+  }
+  to {
+    transform: translate3d(1.4%, 0, 0);
+  }
+}
+
+.intro__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateZ(0);
+  object-fit: contain;
+}
+
+.intro__video--cover {
+  object-fit: cover;
+}
+
+.intro__caption {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 0 24px 14px;
   font-family: var(--font-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-text-subtle);
-  text-align: center;
+}
+
+.intro__hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  animation: hotspot-in 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.intro__hotspot-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.18), 0 0 24px rgba(37, 99, 235, 0.5);
+  animation: crawlpulse 1.8s ease-out infinite;
+}
+
+.intro__hotspot-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.8);
+}
+
+@keyframes hotspot-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes crawlpulse {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.94);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+.intro__ctas {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px 24px;
+}
+
+.intro__ctas--overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px 24px 28px;
+  background: linear-gradient(180deg, rgba(7, 11, 17, 0) 0%, rgba(7, 11, 17, 0.82) 60%, rgba(7, 11, 17, 0.92) 100%);
+}
+
+.intro__cta {
+  appearance: none;
+  border: 1px solid var(--ink-border-strong);
+  background: rgba(19, 29, 44, 0.85);
+  color: var(--ink-text-muted);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 10px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.intro__cta:hover {
+  color: var(--ink-text);
+  border-color: var(--accent);
+}
+
+.intro__cta--active {
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 @media (max-width: 640px) {
@@ -60,64 +209,19 @@
     gap: 8px;
   }
 
-  .intro__caption {
-    bottom: 14px;
-    left: 16px;
-    right: 16px;
-    font-size: 10px;
-  }
-}
-
-.intro__hotspot {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 46px;
-  height: 46px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 4;
-}
-
-.intro__hotspot-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 46px;
-  height: 46px;
-  border: 1.5px solid var(--accent);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: crawlpulse 1.8s ease-out infinite;
-}
-
-.intro__hotspot-dot {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25), 0 0 22px rgba(37, 99, 235, 0.6);
-  transition: transform 0.15s ease;
-}
-
-.intro__hotspot:hover .intro__hotspot-dot {
-  transform: scale(1.15);
-}
-
-@media (max-width: 640px) {
-  .intro__hotspot,
-  .intro__hotspot-ring {
-    width: 38px;
-    height: 38px;
+  .intro__hotspot {
+    width: 32px;
+    height: 32px;
   }
 
-  .intro__hotspot-dot {
-    width: 14px;
-    height: 14px;
+  .intro__ctas {
+    gap: 8px;
+    padding: 14px 16px 22px;
+  }
+
+  .intro__cta {
+    font-size: 11.5px;
+    padding: 9px 13px;
   }
 }
 
@@ -220,17 +324,17 @@
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 6px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: var(--accent);
   text-decoration: none;
 }
 
 .intro-popup__cta:hover {
-  color: #4b83f0;
+  text-decoration: underline;
 }
 
 @media (max-width: 640px) {

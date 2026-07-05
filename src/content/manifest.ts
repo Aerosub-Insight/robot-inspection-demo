@@ -30,25 +30,27 @@ export const manifest: ContentManifest = {
         {
           id: "hull-plating",
           label: "Side-shell plating",
+          ctaLabel: "Hull Crawler Demo",
           x: 44.6,
           y: 57.3,
           introX: 44.6,
           introY: 57.3,
           surface: "Coated steel · vertical",
           description:
-            "The magnetic crawler moves across vertical coated steel plating, the kind of run typical of a ship-side hull section.",
+            "A magnetic Eddyfi VersaTrax™ M-Series crawler adheres to the coated hull plating, giving stable HD imaging on vertical steel from gunnels to keel — no divers, rope access, or scaffolding required.",
           videoUrl: youtubeEmbedUrl("https://youtu.be/xrn8zV57HSA"),
         },
         {
           id: "riser",
           label: "Riser & stern touchdown",
+          ctaLabel: "Riser Clamp Survey",
           x: 89,
           y: 55,
           introX: 93,
           introY: 55,
           surface: "Curved steel · splash zone",
           description:
-            "The crawler negotiates curved steel in a splash-zone-style setting, similar to a riser or stern touchdown area.",
+            "An Eddyfi VersaTrax™ Y-Series crawler uses an expandable, non-magnetic chassis to grip the riser through bends and past clamp placements — a splash-zone survey normally reserved for divers.",
           videoUrl: youtubeEmbedUrl("https://youtu.be/4tp7ytmrahw"),
         },
       ],
@@ -65,6 +67,7 @@ export const manifest: ContentManifest = {
         {
           id: "straight-run",
           label: "Straight Run — 2km Dual Y380",
+          ctaLabel: "Pipeline Straight-Run Demo",
           x: 24,
           y: 46,
           surface: "Insulated steel · horizontal",
@@ -73,6 +76,7 @@ export const manifest: ContentManifest = {
         {
           id: "bend",
           label: "Pipe Bend — Y200 Enter Bend",
+          ctaLabel: "Pipe Bend Navigation",
           x: 54,
           y: 35,
           surface: "Curved steel",
@@ -92,6 +96,7 @@ export const manifest: ContentManifest = {
         {
           id: "actuator-system",
           label: "Rotate & Linear Actuator System — M345 / Y200",
+          ctaLabel: "Actuator System Demo",
           x: 68,
           y: 46,
           surface: "Equipment demo",
@@ -111,6 +116,7 @@ export const manifest: ContentManifest = {
         {
           id: "large-tank-cleaning",
           label: "Large Tank Cleaning & Multi-NDT",
+          ctaLabel: "Tank Cleaning & NDT Demo",
           x: 32,
           y: 55,
           surface: "Shell course",
@@ -119,6 +125,7 @@ export const manifest: ContentManifest = {
         {
           id: "m345-y200",
           label: "M345 & Y200 Deployment",
+          ctaLabel: "Tank Deployment Demo",
           x: 57,
           y: 48,
           surface: "Ladder & pipe run",
@@ -127,6 +134,7 @@ export const manifest: ContentManifest = {
         {
           id: "ut-acquisition",
           label: "M345 Internal UT Acquisition Board",
+          ctaLabel: "UT Acquisition Demo",
           x: 78,
           y: 75,
           surface: "Base manway & valves",
