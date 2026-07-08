@@ -38,6 +38,8 @@ export const manifest: ContentManifest = {
           surface: "Coated steel · vertical",
           description:
             "A magnetic Eddyfi VersaTrax™ M-Series crawler adheres to the coated hull plating, giving stable HD imaging on vertical steel from gunnels to keel — no divers, rope access, or scaffolding required.",
+          simulationDescription:
+            "Simulated scan of the same hull section: the crawler sweeps the plating in a raster pattern, and the moment it passes over a coating defect, the interface flags it live with a red marker for the operator to review.",
           videoUrl: youtubeEmbedUrl("https://youtu.be/xrn8zV57HSA"),
         },
         {
@@ -46,11 +48,13 @@ export const manifest: ContentManifest = {
           ctaLabel: "Riser Clamp Survey",
           x: 89,
           y: 55,
-          introX: 93,
-          introY: 55,
+          introX: 93.5,
+          introY: 63,
           surface: "Curved steel · splash zone",
           description:
             "An Eddyfi VersaTrax™ Y-Series crawler uses an expandable, non-magnetic chassis to grip the riser through bends and past clamp placements — a splash-zone survey normally reserved for divers.",
+          simulationDescription:
+            "Simulated run on the riser: the crawler's expandable chassis grips the pipe and travels up and down its length, holding position through the splash zone as it would on a live clamp survey.",
           videoUrl: youtubeEmbedUrl("https://youtu.be/4tp7ytmrahw"),
         },
       ],

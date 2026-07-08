@@ -8,6 +8,7 @@ export interface Hotspot {
   ctaLabel?: string // short CTA button text for the / landing page (falls back to label)
   surface?: string
   description?: string
+  simulationDescription?: string // shown instead of description when the / landing page's "View simulation" clip is playing
   videoUrl: string
 }
 
