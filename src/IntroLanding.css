@@ -115,6 +115,16 @@
   height: 90px;
 }
 
+.intro__hotspot--cypher-weld-scan {
+  width: 115px;
+  height: 115px;
+}
+
+.intro__hotspot--mantis-corrosion {
+  width: 65px;
+  height: 65px;
+}
+
 .intro__hotspot-marker {
   width: 100%;
   height: 100%;
@@ -232,6 +242,16 @@
   .intro__hotspot--riser {
     width: 62px;
     height: 62px;
+  }
+
+  .intro__hotspot--cypher-weld-scan {
+    width: 80px;
+    height: 80px;
+  }
+
+  .intro__hotspot--mantis-corrosion {
+    width: 46px;
+    height: 46px;
   }
 
   .intro__ctas {

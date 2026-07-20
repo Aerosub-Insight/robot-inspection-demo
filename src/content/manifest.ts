@@ -57,6 +57,36 @@ export const manifest: ContentManifest = {
             "Simulated run on the riser: the crawler's expandable chassis grips the pipe and travels up and down its length, holding position through the splash zone as it would on a live clamp survey.",
           videoUrl: youtubeEmbedUrl("https://youtu.be/4tp7ytmrahw"),
         },
+        {
+          id: "cypher-weld-scan",
+          label: "Girth Weld Scanning",
+          ctaLabel: "Cypher Weld Scan Demo",
+          x: 67,
+          y: 63,
+          introX: 67,
+          introY: 66,
+          surface: "Structural steel · weld seam",
+          description:
+            "The Cypher remote weld-scanning system inspects girth welds and structural joints on the hull without divers, rigging, or scaffolding — a full weld-seam record captured remotely.",
+          simulationDescription:
+            "A generated visualization of the Cypher crawler in position on the hull, showing how it moves across the structure during a weld-scanning pass.",
+          videoUrl: youtubeEmbedUrl("https://youtu.be/kYqEtUWVUlU"),
+        },
+        {
+          id: "mantis-corrosion",
+          label: "Corrosion Mapping",
+          ctaLabel: "MANTIS M2M Corrosion Scan",
+          x: 71,
+          y: 32,
+          introX: 71,
+          introY: 32,
+          surface: "Corroded steel · curved pipe",
+          description:
+            "A MANTIS M2M crawler maps corrosion and wall-thickness loss across curved and cylindrical steel, shown here in a bench test on a corroded pipe section.",
+          simulationDescription:
+            "A generated visualization of the MANTIS M2M crawler in position on a corroded pipe section, showing how it moves across the curved steel during a corrosion survey.",
+          videoUrl: youtubeEmbedUrl("https://youtu.be/cBBu91OYkSc"),
+        },
       ],
     },
     {

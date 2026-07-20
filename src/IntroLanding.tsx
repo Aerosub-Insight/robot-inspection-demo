@@ -5,6 +5,8 @@ import { youtubeEmbedUrl } from "./content/youtube";
 import type { Hotspot } from "./types/content";
 import crawlerImage from "./assets/diagrams/crawler.png";
 import riserImage from "./assets/diagrams/riser.png";
+import weldImage from "./assets/diagrams/weld.png";
+import corrosionImage from "./assets/diagrams/corrosion.png";
 import "./IntroLanding.css";
 
 // Hosted on Cloudinary rather than bundled — Netlify's static asset CDN
@@ -17,6 +19,8 @@ const introVideo =
 const hotspotMarkerImages: Partial<Record<string, string>> = {
   "hull-plating": crawlerImage,
   riser: riserImage,
+  "cypher-weld-scan": weldImage,
+  "mantis-corrosion": corrosionImage,
 };
 
 // Plays inline in a hotspot's popup when "View simulation" is clicked, in
@@ -27,6 +31,10 @@ const hotspotSimulationVideos: Partial<Record<string, string>> = {
     "https://res.cloudinary.com/si6hekwh/video/upload/v1783509981/kling_20260708_VIDEO_Cinematic__4917_0_hfujad.mp4",
   riser:
     "https://res.cloudinary.com/si6hekwh/video/upload/v1783512852/kling_20260708_VIDEO_Using_the__5149_0_o9pmxz.mp4",
+  "cypher-weld-scan":
+    "https://res.cloudinary.com/si6hekwh/video/upload/v1784560423/weld-simulation_ou81h5.mp4",
+  "mantis-corrosion":
+    "https://res.cloudinary.com/si6hekwh/video/upload/v1784557122/weld-simulation_m2kl1f.mp4",
 };
 
 const hullTab = manifest.tabs.find(
